@@ -1,6 +1,6 @@
 clear all ; close all ; clc
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/8.txt', 'r');
 
 for ii = 1:2:2000
     % pre-processing

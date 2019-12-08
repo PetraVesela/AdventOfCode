@@ -18,7 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::ifstream input;
 	std::string line;
 
-	input.open("input.txt");
+	input.open("inputs/7.txt");
 
 	while (input >> line) {
 		

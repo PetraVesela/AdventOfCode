@@ -2,7 +2,7 @@ clear all ; close all ; clc
 
 % Matlab 2013b
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/8.txt', 'r');
 temp = fgetl(input);
 
 for i = 1:153

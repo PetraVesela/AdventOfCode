@@ -33,7 +33,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::vector<std::string> rooms;
 	std::regex north("north");
 
-	input.open("input.txt");
+	input.open("inputs/4.txt");
 
 	while (input >> entry) {
 		entry.erase(std::remove(entry.begin(), entry.end(), '-'), entry.end());

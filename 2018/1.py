@@ -1,6 +1,6 @@
 import itertools
 # read the data
-file  = open('1.txt', 'r')
+file  = open('inputs/1.txt', 'r')
 result = 0
 secondResult = False 
 frequencies = set() 

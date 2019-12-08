@@ -5,7 +5,7 @@ clear  ; close ; clc
 checksum1 = 0;
 checksum2 = 0;
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/2.txt', 'r');
 for ind = 1:16
     data = fgetl(input);
     data = str2num(data);

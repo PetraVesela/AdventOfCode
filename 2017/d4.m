@@ -1,6 +1,6 @@
 clear ; close all ; clc
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/4.txt', 'r');
 
 %% Part 1 
 % valid = 0;

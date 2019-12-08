@@ -1,6 +1,6 @@
 clear ; close ; clc;
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/6.txt', 'r');
 data = fscanf(input, '%d');
 fclose(input);
 

@@ -18,6 +18,3 @@
  
  nearestCorner = vec(end-3)
  cornerDistance = dist(end-3)
-% 590-110 = 480;
- %armSize = 0.25*( (vec(end)) - (vec(end-4)));
-

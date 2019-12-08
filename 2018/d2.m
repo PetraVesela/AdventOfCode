@@ -1,7 +1,7 @@
 clearvars; clc
 
 % open the file
-input = fopen('2.txt', 'r');
+input = fopen('inputs/2.txt', 'r');
 exactlyTwo = 0;
 exactlyThree = 0;
 

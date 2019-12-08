@@ -1,7 +1,7 @@
 clear ; close all ; clc
 
 
-input = fopen('input.txt', 'r');
+input = fopen('inputs/6.txt', 'r');
 data = fscanf(input, '%s');
 fclose(input);
 

@@ -1,7 +1,7 @@
 clearvars ; clc
 
 % open the file
-input = fopen('5.txt', 'r');
+input = fopen('inputs/5.txt', 'r');
 orig = fgetl(input);
 a = orig;
 results = [];

@@ -16,7 +16,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::string instr;
 	std::vector<std::vector<short>> dims;
 
-	input.open("input.txt");
+	input.open("inputs/3.txt");
 
 	while (input >> instr)
 	{

@@ -1,7 +1,7 @@
 clear ; close ; clc
 
 %% Reading the data
-input = fopen('input.txt', 'r');
+input = fopen('inputs/5.txt', 'r');
 data = fscanf(input, '%d');
 fclose(input);
 

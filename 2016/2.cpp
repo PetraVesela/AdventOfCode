@@ -20,7 +20,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::ifstream input;
 	std::string instr;
 
-	input.open("input.txt");
+	input.open("inputs/2.txt");
 
 	while (input >> instr)
 	{
