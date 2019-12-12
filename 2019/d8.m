@@ -44,5 +44,5 @@ for ii = 1: pictureSize(2)
     end
 end
 
-imshow(finalPicture.')
+imshow(finalPicture.', 'InitialMagnification',600)
 fclose(file);
