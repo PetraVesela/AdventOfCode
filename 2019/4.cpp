@@ -10,11 +10,11 @@ void collect_digits(std::vector<short>& digits, long num) {
 	digits.push_back(num % 10);
 }
 
-enum whatToCheck{ justAfter, justBefore, both };
-	
 int main() {
-	long start = 111122; //236491;
+	long start = 236491; // input
 	long stop = 713787;
+	std::regex repeated("(\\d)\\1{2,}"); 
+	std::regex couple("(\\d)\\1{1}");
 
 	int numOfPasswords = 0;
 	for (long int i = start; i < stop; i++) {
@@ -25,37 +25,46 @@ int main() {
 		if ((std::is_sorted(digits.begin(), digits.end()))
 			&& (std::adjacent_find(digits.begin(), digits.end()) != digits.end()))
 		{
-			// Part 2  -- just check neighbouring element being different
-			auto it = std::adjacent_find(digits.begin(), digits.end());
-			
-			int dist = std::distance(digits.begin(), it);
+			// Part 2  --  check with regex 
+			std::string tmp = std::to_string(i);
+			std::smatch res;
+			std::string tmpPrefix, tmpSuffix;
 
-			whatToCheck a = (dist < 4 && dist > 0) ? both : 
-						(dist == 0) ? justAfter :justBefore;
+			std::regex_search(tmp, res, repeated); // find a sequence longer than 2
+			if (!res.empty()) {
 
-			switch (a)
-			{
-				case both:
-					if (*it == *(std::prev(it)) || *it == *(std::next(it, 2)))
-						continue;
-					break;		
-				case justBefore:
-					if (*it == *(std::prev(it)))
-						continue;
-					break;
-				case justAfter:
-					if (*it == *(std::next(it, 2)))
-						continue;
-					break;
-			};
-			numOfPasswords++;
+				std::smatch resPrefix, resSuffix;
+				tmpPrefix = res.prefix().str();	 // check if there are 2 same either in prefix...
 
-				
-			// end of Part 2
+				std::regex_search(tmpPrefix, resPrefix, couple);
+				if (!resPrefix.empty()) { // make sure it's not a triplet
+					
+					std::regex_match(tmpPrefix, res, repeated);
+					if (res.empty()) { // not a triplet
+						numOfPasswords++;
+						continue;
+					}
+					
+				}
+
+				tmpSuffix = res.suffix();	 // ... or in suffix
+
+				std::regex_search(tmpSuffix, resSuffix, couple);
+				if (!resSuffix.empty())
+				{
+					std::regex_match(tmpSuffix, res, repeated);
+					if (res.empty()) {
+						numOfPasswords++;
+						continue;
+					}
+				}
+			}
+			else numOfPasswords++;
+
 		}
-		else
-			continue;
+		else continue;
 	}
+
 	std::cout << numOfPasswords;
 	return 0;
 }
