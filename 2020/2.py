@@ -1,15 +1,15 @@
 import re
 
 def is_valid_password_part_1(pw):
-    num_repetitions = pw[3].count(pw[2])
-    return num_repetitions <= int(pw[1]) and num_repetitions >= int(pw[0])
+    num_repetitions = pw['password'].count(pw['letter'])
+    return num_repetitions <= int(pw['end']) and num_repetitions >= int(pw['start'])
 
 
 def is_valid_password_part_2(pw):
-    start = int(pw[0]) - 1
-    end = int(pw[1]) - 1
+    start = int(pw['start']) - 1
+    end = int(pw['end']) - 1
 
-    return pw[3][start] != pw[3][end] and pw[2] in [pw[3][start], pw[3][end]]
+    return pw['password'][start] != pw['password'][end] and pw['letter'] in [pw['password'][start], pw['password'][end]]
 
 def main():
     with open("inputs/2.txt", 'r') as file:
@@ -17,7 +17,7 @@ def main():
 
     lines = filedump.split('\n')
 
-    parsed_passwords = [re.match(r'(\d+)-(\d+)\s([a-z]):\s(\w+)', password).groups() for password in lines]
+    parsed_passwords = [re.match(r'(?P<start>\d+)-(?P<end>\d+)\s(?P<letter>[a-z]):\s(?P<password>\w+)', password).groupdict() for password in lines]
 
     valid_passwords_part_1 = [pw for pw in parsed_passwords if is_valid_password_part_1(pw)]
     valid_passwords_part_2 = [pw for pw in parsed_passwords if is_valid_password_part_2(pw)]
