@@ -1,3 +1,4 @@
+'''Context-free grammar: https://en.wikipedia.org/wiki/Context-free_grammar'''
 import random
 
 def replace_kth_occurrence(string, substring_old, substring_new, k):

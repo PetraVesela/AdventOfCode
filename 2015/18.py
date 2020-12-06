@@ -1,4 +1,6 @@
 ''' For part 1/2 toggle lines 37/38'''
+# Conway's Game of Life
+
 import numpy as np
 
 
