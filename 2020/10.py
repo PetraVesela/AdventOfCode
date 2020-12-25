@@ -1,4 +1,5 @@
 ''' Dynamic programming? '''
+from time import time
 
 def get_possible_steps(adapters, index):
     current = adapters[index]
@@ -33,13 +34,16 @@ def main():
         diff_list.append(y-x)
 
     print('Part 1: ', diff_list.count(1) * diff_list.count(3))
-    total = 0
+    t0 = time()
+    total = 1
     index = 0
-    first_half = adapters[:44]
-    second_half = adapters[44:]
-
-    total_1 = follow_path(index, first_half, total)
-    total_2 = follow_path(index, second_half, total)
+    
+    num_chunks = 4
+    for ind in range(num_chunks):
+        chunk = len(adapters)/num_chunks
+        total_1 *= follow_path(index, chunk, total)
+    t1 = time()
+    print(t1-t0)
     print('Part 2: ', total_1*total_2)
 
 
