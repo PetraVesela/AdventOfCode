@@ -1,13 +1,19 @@
-
 cmake_minimum_required(VERSION 3.20)
 
 project (intcode)
 
+if (MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
 include_directories(
-    ${CMAKE_SOURCE_DIR}/intcode_functions/
+    ${CMAKE_SOURCE_DIR}/lib/
 )
-add_subdirectory(intcode_functions)
 
-add_executable(day_2 2.c)
+enable_testing()
+add_subdirectory(lib)
 
-target_link_libraries(day_2 intcode)
+add_subdirectory(days)
+add_subdirectory(tst)
