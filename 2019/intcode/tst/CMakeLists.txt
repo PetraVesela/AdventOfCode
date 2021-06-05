@@ -48,3 +48,6 @@ set_tests_properties(
     Day_5_regression_part_2 PROPERTIES
     PASS_REGULAR_EXPRESSION "12410607"
 )
+
+add_test(NAME Day_7_shorter_1 COMMAND day_7 ../../../inputs/7_shorter_1.txt)
+add_test(NAME Day_7 COMMAND day_7 ../../../inputs/7.txt)

@@ -5,6 +5,7 @@
 // GLOBAL VARIABLES
 //
 int input_register, output_register, program_ctr;
+static int input_num = 0;
 
 // SUPPORTED INSTRUCTIONS
 //
@@ -19,7 +20,14 @@ static void multiply(const int *params, int *buffer) {
 }
 
 static void read(const int *params, int *buffer) {
-  buffer[params[0]] = input_register;
+  if (input_num == 0) {
+    buffer[params[0]] = input_register;
+    input_num++;
+  } else {
+    buffer[params[0]] = output_register;
+    input_num = 0;
+  }
+
   return;
 }
 
@@ -117,7 +125,7 @@ int intcode_process(int *buffer) {
     int tmp_pos = program_ctr;
     instructions[opcode % 100].func(parsed_params, buffer);
     if (program_ctr == tmp_pos) {
-      // Only increas program_ctr, if it wasn't updated by jump instruction
+      // Only increase program_ctr, if it wasn't updated by jump instruction
       program_ctr += (n_params + 1);
     }
 
