@@ -2,68 +2,64 @@
 #include <stdio.h>
 #include <string.h>
 
-// GLOBAL VARIABLES
-//
-int input_register, output_register, program_ctr;
 static int input_num = 0;
 
 // SUPPORTED INSTRUCTIONS
 //
-static void add(const int *params, int *buffer) {
-  buffer[params[2]] = params[0] + params[1];
+static void add(intcode_t *me, const int *params) {
+  me->buffer[params[2]] = params[0] + params[1];
   return;
 }
 
-static void multiply(const int *params, int *buffer) {
-  buffer[params[2]] = params[0] * params[1];
+static void multiply(intcode_t *me, const int *params) {
+  me->buffer[params[2]] = params[0] * params[1];
   return;
 }
 
-static void read(const int *params, int *buffer) {
+static void read(intcode_t *me, const int *params) {
   if (input_num == 0) {
-    buffer[params[0]] = input_register;
+    me->buffer[params[0]] = me->input_register;
     input_num++;
   } else {
-    buffer[params[0]] = output_register;
+    me->buffer[params[0]] = me->output_register;
     input_num = 0;
   }
 
   return;
 }
 
-static void write(const int *params, int *buffer) {
-  output_register = buffer[params[0]];
+static void write(intcode_t *me, const int *params) {
+  me->output_register = me->buffer[params[0]];
   return;
 }
 
-static void jump_if_true(const int *params, int *buffer) {
-  (void)buffer;
+static void jump_if_true(intcode_t *me, const int *params) {
   if (params[0] != 0) {
-    program_ctr = params[1];
+    me->program_ctr = params[1];
   }
   return;
 }
 
-static void jump_if_false(const int *params, int *buffer) {
-  (void)buffer;
+static void jump_if_false(intcode_t *me, const int *params) {
+
   if (params[0] == 0) {
-    program_ctr = params[1];
+    me->program_ctr = params[1];
   }
   return;
 }
 
-static void less_than(const int *params, int *buffer) {
-  buffer[params[2]] = params[0] < params[1];
+static void less_than(intcode_t *me, const int *params) {
+  me->buffer[params[2]] = params[0] < params[1];
   return;
 }
 
-static void equals(const int *params, int *buffer) {
-  buffer[params[2]] = params[0] == params[1];
+static void equals(intcode_t *me, const int *params) {
+  me->buffer[params[2]] = params[0] == params[1];
   return;
 }
 
 // DISPATCHER
-typedef void (*function)(const int *params, int *buffer);
+typedef void (*function)(intcode_t *me, const int *params);
 typedef struct {
   function func;
   int n_params;
@@ -89,7 +85,7 @@ static void eval_params(int param_modes, int *buffer, int params[],
 }
 
 // API
-int intcode_flash_program(int *buffer, const char *filename) {
+int intcode_flash_program(intcode_t *me, const char *filename) {
   FILE *fptr;
   fptr = fopen(filename, "r");
 
@@ -99,16 +95,16 @@ int intcode_flash_program(int *buffer, const char *filename) {
   };
 
   int i = 0;
-  while (EOF != fscanf(fptr, "%d,", &buffer[i])) {
+  while (EOF != fscanf(fptr, "%d,", &me->buffer[i])) {
     i++;
   }
   fclose(fptr);
   return 0;
 }
 
-int intcode_process(int *buffer) {
-  program_ctr = 0;
-  int opcode = buffer[program_ctr];
+int intcode_process(intcode_t *me) {
+  me->program_ctr = 0;
+  int opcode = me->buffer[me->program_ctr];
   int parsed_params[3];
 
   while (opcode != 99) {
@@ -116,20 +112,21 @@ int intcode_process(int *buffer) {
     int n_params = instructions[opcode % 100].n_params;
 
     // copy parameters from the buffer and evaluate
-    memcpy(parsed_params, &buffer[program_ctr + 1], sizeof(parsed_params));
+    memcpy(parsed_params, &me->buffer[me->program_ctr + 1],
+           sizeof(parsed_params));
     // Parameters that an instruction writes to will never be in immediate mode.
     if (opcode % 100 == 5 || opcode % 100 == 6) {
-      eval_params(opcode / 100, buffer, parsed_params, n_params);
+      eval_params(opcode / 100, me->buffer, parsed_params, n_params);
     } else
-      eval_params(opcode / 100, buffer, parsed_params, n_params - 1);
-    int tmp_pos = program_ctr;
-    instructions[opcode % 100].func(parsed_params, buffer);
-    if (program_ctr == tmp_pos) {
-      // Only increase program_ctr, if it wasn't updated by jump instruction
-      program_ctr += (n_params + 1);
+      eval_params(opcode / 100, me->buffer, parsed_params, n_params - 1);
+    int tmp_pos = me->program_ctr;
+    instructions[opcode % 100].func(me, parsed_params);
+    if (me->program_ctr == tmp_pos) {
+      // Only increase me->program_ctr, if it wasn't updated by jump instruction
+      me->program_ctr += (n_params + 1);
     }
 
-    opcode = buffer[program_ctr];
+    opcode = me->buffer[me->program_ctr];
   }
-  return buffer[0];
+  return me->buffer[0];
 }

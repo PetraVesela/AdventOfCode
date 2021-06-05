@@ -1,6 +1,6 @@
-# Day 2 
+# Day 2
 
-add_test(NAME Day_2_regression COMMAND day_2 "../../../inputs/2.txt" 0)
+add_test(NAME Day_2_regression COMMAND day_2 ../../../inputs/2.txt)
 
 # Day 5
 

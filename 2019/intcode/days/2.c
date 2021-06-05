@@ -5,7 +5,6 @@
 
 #include <intcode.h>
 
-#define MAXCHAR (1000)
 #define PART_1_X (12)
 #define PART_1_Y (2)
 #define PART_2 (19690720)
@@ -22,23 +21,24 @@ void restore_gravity(int *buffer, const int x, const int y) {
 
 int main(int argc, char **argv) {
   (void)argc;
-  int buffer[MAXCHAR];
-  if (intcode_flash_program(buffer, argv[1])) {
+  intcode_t intcode;
+
+  if (intcode_flash_program(&intcode, argv[1])) {
     printf("Failed to open the input file!");
     return -1;
   }
 
   // process with intcode:
-  restore_gravity(buffer, PART_1_X, PART_1_Y);
-  int result_1 = intcode_process(buffer);
+  restore_gravity(intcode.buffer, PART_1_X, PART_1_Y);
+  int result_1 = intcode_process(&intcode);
   assert(result_1 == RESULT_1);
   printf("Part 1: %d\n", result_1);
 
   for (int i = 0; i < 99; i++) {
     for (int j = 0; j < 99; j++) {
-      intcode_flash_program(buffer, argv[1]);
-      restore_gravity(buffer, i, j);
-      if (intcode_process(buffer) == PART_2) {
+      intcode_flash_program(&intcode, argv[1]);
+      restore_gravity(intcode.buffer, i, j);
+      if (intcode_process(&intcode) == PART_2) {
         printf("Part 2: %d%d\n", i, j);
         assert(i == RESTULT_2a);
         assert(j == RESTULT_2b);

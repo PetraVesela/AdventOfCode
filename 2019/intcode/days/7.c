@@ -4,25 +4,23 @@
 
 #include <intcode.h>
 
-#define MAXCHAR (1000)
 #define NUM_AMPS (5)
 
-extern int input_register, output_register;
-
 int process_arr(int arr[], char *filename) {
-  int buffer[MAXCHAR];
+  intcode_t intcode;
   // process with intcode:
   for (int amp = 0; amp < 5; amp++) {
-    input_register = arr[amp];
-    if (intcode_flash_program(buffer, filename)) {
+
+    intcode.input_register = arr[amp];
+    if (intcode_flash_program(&intcode, filename)) {
       printf("Failed to open the input file!");
       return -1;
     }
 
-    intcode_process(buffer);
+    intcode_process(&intcode);
   }
-  printf("%d\n", output_register);
-  output_register = 0;
+  printf("%d\n", intcode.output_register);
+  intcode.output_register = 0;
   return 0;
 }
 
@@ -49,8 +47,6 @@ void heap_permutation(int arr[], int size, int n, char *filename) {
 
 int main(int argc, char **argv) {
   (void)argc;
-  input_register = 0;
-  output_register = 0;
 
   int permutation[NUM_AMPS];
   for (int a = 0; a < NUM_AMPS; a++) {
@@ -58,5 +54,5 @@ int main(int argc, char **argv) {
   }
   heap_permutation(permutation, NUM_AMPS, NUM_AMPS, argv[1]);
 
-  return output_register;
+  return 0;
 }
