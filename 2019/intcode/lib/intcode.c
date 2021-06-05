@@ -5,6 +5,7 @@
 // GLOBAL VARIABLES
 //
 int input_register, output_register, program_ctr;
+static int input_num = 0;
 
 // SUPPORTED INSTRUCTIONS
 //
@@ -19,7 +20,14 @@ static void multiply(const int *params, int *buffer) {
 }
 
 static void read(const int *params, int *buffer) {
-  buffer[params[0]] = input_register;
+  if (input_num == 0) {
+    buffer[params[0]] = input_register;
+    input_num++;
+  } else {
+    buffer[params[0]] = output_register;
+    input_num = 0;
+  }
+
   return;
 }
 
@@ -125,3 +133,9 @@ int intcode_process(int *buffer) {
   }
   return buffer[0];
 }
+/*
+typedef struct intcode {
+  int (*intcode_flash_program)(int *buffer, const char *filename);
+  int *buffer;
+} intcode_t;
+*/

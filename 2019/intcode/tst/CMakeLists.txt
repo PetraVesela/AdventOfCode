@@ -1,6 +1,6 @@
 # Day 2 
 
-add_test(NAME Day_2_regression COMMAND day_2 "../../../inputs/2.txt" 0)
+add_test(NAME Day_2_regression COMMAND day_2 ../../../inputs/2.txt 0)
 
 # Day 5
 
@@ -48,3 +48,13 @@ set_tests_properties(
     Day_5_regression_part_2 PROPERTIES
     PASS_REGULAR_EXPRESSION "12410607"
 )
+
+# Day 7
+add_test(NAME Day_7_shorter_1 COMMAND day_7 ../../../inputs/7_shorter_1.txt)
+set_tests_properties(
+    Day_7_shorter_1 PROPERTIES
+    PASS_REGULAR_EXPRESSION "4321"
+)
+
+# Day 7
+add_test(NAME Day_7 COMMAND day_7 ../../../inputs/7.txt)
