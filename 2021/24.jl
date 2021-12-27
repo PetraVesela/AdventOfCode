@@ -1,3 +1,6 @@
+# Apparently the condition on 11 is too strict to discard a solution.
+# Solution to the second part was found by hand
+
 # Input file is rewritten into the monad() function:
 function monad(z, w, ind)
     a = [1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0]
@@ -51,6 +54,7 @@ function find_valid_number()
                     pop!(input)
                     continue
                 end
+
                 try
                     z = monad(z, input[ind], ind)
                 catch e
@@ -64,7 +68,7 @@ function find_valid_number()
                 end
                 if z == 0 && ind == 14
                     println("FOUND ", fold_input(input))
-                    return
+                    sleep(0.1)
                 end
             end
         end
