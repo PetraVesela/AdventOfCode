@@ -31,5 +31,5 @@ func main() {
 	// Get the maximum elements
 	sort.Sort(sort.Reverse(sort.IntSlice(calories)))
 	fmt.Println("Part 1: ", calories[0])
-	fmt.Println("Part 1: ", calories[0]+calories[1]+calories[2])
+	fmt.Println("Part 2: ", calories[0]+calories[1]+calories[2])
 }
