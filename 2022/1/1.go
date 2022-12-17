@@ -11,9 +11,9 @@ import (
 
 func main() {
 	// Read input into int arrays
-	body, err := os.ReadFile("inputs/1.txt")
+	body, err := os.ReadFile("1.txt")
 	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
+		log.Fatalf("unable to read file: %v\n", err)
 	}
 
 	elves := strings.Split(string(body), "\n\n")
@@ -22,8 +22,8 @@ func main() {
 		snacks := strings.Split(elf, "\n")
 		cal := 0
 		for _, snack := range snacks {
-			snack_cal, _ := strconv.Atoi(snack)
-			cal += snack_cal
+			snackCal, _ := strconv.Atoi(snack)
+			cal += snackCal
 		}
 		calories = append(calories, cal)
 	}

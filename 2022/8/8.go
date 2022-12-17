@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func is_visible_from_top(trees [][]int, x int, y int) bool {
+func isVisibleFromTop(trees [][]int, x int, y int) bool {
 	for i := 0; i < x; i++ {
 		if trees[i][y] >= trees[x][y] {
 			return false
@@ -17,7 +17,7 @@ func is_visible_from_top(trees [][]int, x int, y int) bool {
 	return true
 }
 
-func is_visible_from_bottom(trees [][]int, x int, y int) bool {
+func isVisibleFromBottom(trees [][]int, x int, y int) bool {
 	for i := len(trees) - 1; i > x; i-- {
 		if trees[i][y] >= trees[x][y] {
 			return false
@@ -26,7 +26,7 @@ func is_visible_from_bottom(trees [][]int, x int, y int) bool {
 	return true
 }
 
-func is_visible_from_left(trees [][]int, x int, y int) bool {
+func isVisibleFromLeft(trees [][]int, x int, y int) bool {
 	for i := 0; i < y; i++ {
 		if trees[x][i] >= trees[x][y] {
 			return false
@@ -35,7 +35,7 @@ func is_visible_from_left(trees [][]int, x int, y int) bool {
 	return true
 }
 
-func is_visible_from_right(trees [][]int, x int, y int) bool {
+func isVisibleFromRight(trees [][]int, x int, y int) bool {
 	for i := len(trees) - 1; i > y; i-- {
 		if trees[x][i] >= trees[x][y] {
 			return false
@@ -44,7 +44,7 @@ func is_visible_from_right(trees [][]int, x int, y int) bool {
 	return true
 }
 
-func get_scenic_score(trees [][]int, x int, y int) int {
+func getScenicScore(trees [][]int, x int, y int) int {
 	top := 0
 	for i := x - 1; i >= 0; i-- {
 		top++
@@ -80,7 +80,7 @@ func get_scenic_score(trees [][]int, x int, y int) int {
 
 func main() {
 	// Read input into a 2D int array
-	body, err := os.ReadFile("inputs/8.txt")
+	body, err := os.ReadFile("8.txt")
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}
@@ -89,38 +89,38 @@ func main() {
 	trees := make([][]int, len(lines))
 
 	for r, line := range lines {
-		line_trees := strings.Split(line, "")
-		trees[r] = make([]int, len(line_trees))
-		for c, tree := range line_trees {
-			tree_height, _ := strconv.Atoi(tree)
-			trees[r][c] = tree_height
+		lineTrees := strings.Split(line, "")
+		trees[r] = make([]int, len(lineTrees))
+		for c, tree := range lineTrees {
+			treeHeight, _ := strconv.Atoi(tree)
+			trees[r][c] = treeHeight
 		}
 	}
 
 	// Part 1:
 	// The trees on the edge are always visible
-	num_visible := len(lines)*2 + 2*(len(lines)-2)
+	numVisible := len(lines)*2 + 2*(len(lines)-2)
 	// Then for each tree inside the always-visible circle...
 	for r := 1; r < len(lines)-1; r++ {
 		for c := 1; c < len(lines)-1; c++ {
 			// ... check if it is visible from some direction
-			if is_visible_from_top(trees, r, c) || is_visible_from_bottom(trees, r, c) || is_visible_from_right(trees, r, c) || is_visible_from_left(trees, r, c) {
-				num_visible++
+			if isVisibleFromTop(trees, r, c) || isVisibleFromBottom(trees, r, c) || isVisibleFromRight(trees, r, c) || isVisibleFromLeft(trees, r, c) {
+				numVisible++
 			}
 		}
 	}
-	fmt.Println("Part 1: ", num_visible)
+	fmt.Println("Part 1: ", numVisible)
 
-	max_scenic_score := 0
+	maxScenicScore := 0
 	// Part 2:
 	// Skip the edges again
 	for r := 1; r < len(lines)-1; r++ {
 		for c := 1; c < len(lines)-1; c++ {
-			this_score := get_scenic_score(trees, r, c)
-			if this_score > max_scenic_score {
-				max_scenic_score = this_score
+			score := getScenicScore(trees, r, c)
+			if score > maxScenicScore {
+				maxScenicScore = score
 			}
 		}
 	}
-	fmt.Println("Part 2: ", max_scenic_score)
+	fmt.Println("Part 2: ", maxScenicScore)
 }

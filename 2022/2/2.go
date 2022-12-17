@@ -9,10 +9,11 @@ import (
 
 func main() {
 	// Read the input into int arrays
-	fileHandle, err := os.Open("inputs/2.txt")
+	fileHandle, err := os.Open("2.txt")
 	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
+		log.Fatalf("unable to read file: %v\n", err)
 	}
+	defer fileHandle.Close()
 
 	fileScanner := bufio.NewScanner(fileHandle)
 	fileScanner.Split(bufio.ScanLines)
@@ -23,8 +24,6 @@ func main() {
 		elf = append(elf, int(fileScanner.Text()[0]-64)) // 'A' = 65
 		me = append(me, int(fileScanner.Text()[2]-87))   // 'X' = 88
 	}
-
-	fileHandle.Close()
 
 	RPS := [][]int{
 		{3, 0, 6},
