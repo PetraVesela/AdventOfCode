@@ -7,23 +7,23 @@ import (
 	"os"
 )
 
-type set_rune = map[rune]bool
+type runeSet = map[rune]bool
 
-func intersect(s1 set_rune, s2 set_rune) set_rune {
-	s_intersection := set_rune{}
+func intersect(s1, s2 runeSet) runeSet {
+	sIntersection := make(runeSet)
 	if len(s1) > len(s2) {
 		s1, s2 = s2, s1 // better to iterate over a shorter set
 	}
-	for k, _ := range s1 {
+	for k := range s1 {
 		if s2[k] {
-			s_intersection[k] = true
+			sIntersection[k] = true
 		}
 	}
-	return s_intersection
+	return sIntersection
 }
 
-func stringToSet(s string) set_rune {
-	set := make(set_rune)
+func stringToSet(s string) runeSet {
+	set := make(runeSet)
 	for _, x := range s {
 		set[x] = true
 	}
@@ -40,10 +40,11 @@ func getItemValue(item rune) rune {
 
 func main() {
 	// Read the input line by line
-	fileHandle, err := os.Open("inputs/3.txt")
+	fileHandle, err := os.Open("3.txt")
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}
+	defer fileHandle.Close()
 
 	fileScanner := bufio.NewScanner(fileHandle)
 	fileScanner.Split(bufio.ScanLines)
@@ -56,15 +57,14 @@ func main() {
 		rucksacks = append(rucksacks, rucksack)
 		// Split each rucksack in two compartments and make them a set
 
-		compartment_1 := stringToSet(rucksack[:len(rucksack)/2])
-		compartment_2 := stringToSet(rucksack[len(rucksack)/2:])
+		compartment1 := stringToSet(rucksack[:len(rucksack)/2])
+		compartment2 := stringToSet(rucksack[len(rucksack)/2:])
 
-		var common = intersect(compartment_1, compartment_2)
-		for s, _ := range common {
+		var common = intersect(compartment1, compartment2)
+		for s := range common {
 			prioritySum += getItemValue(s)
 		}
 	}
-	fileHandle.Close()
 
 	fmt.Println("Part 1: ", prioritySum)
 
@@ -77,11 +77,10 @@ func main() {
 
 		ab := intersect(a, b)
 		abc := intersect(ab, c)
-		for s, _ := range abc {
+		for s := range abc {
 			prioritySum += getItemValue(s)
 		}
 	}
 
 	fmt.Println("Part 2: ", prioritySum)
-
 }
