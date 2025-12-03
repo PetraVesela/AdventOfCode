@@ -24,17 +24,19 @@ class Interval
             // Don't bother checking odd-length strings
             if (str.length() % 2)
                 continue;
-#endif
+#else
             // If the string cannot be split precisely into this segment length, continue
             if (str.length() % segment_length)
                 continue;
-            
+#endif            
             // Store unique segments
             std::unordered_set<std::string> substrings;
 
             for (int pos = 0; pos < str.length(); pos += segment_length) {
                 std::string segment = str.substr(pos, segment_length);
                 substrings.insert(segment);
+                if (substrings.size() > 1)
+                    break;
             }
 
             // if all the segments are the same, ID is invalid
